@@ -21,39 +21,57 @@ A **provider-agnostic, production-ready** media stack: *Arr apps + Jellyfin, wit
 
 ```mermaid
 flowchart LR
+  %% --- Subgraphs ---
   subgraph Internet
-    U[User Browser]
+    U["User Browser"];
   end
 
   subgraph Host
-    Caddy[Caddy (TLS + Authentik ForwardAuth)]
-    AuthOut[Authentik Outpost]
-    AuthS[Authentik Server]
+    Caddy["Caddy (TLS + Authentik ForwardAuth)"];
+    AuthOut["Authentik Outpost"];
+    AuthS["Authentik Server"];
   end
 
   subgraph Docker
-    Gluetun[Gluetun (VPN)]
-    QB[qBittorrent]
-    Prowlarr
-    Sonarr
-    Radarr
-    Readarr
-    Lidarr
-    Bazarr
-    Jellyfin
-    Jellyseerr
-    Flare[FlareSolverr*]
-    Strip[Striparr*]
-    Tdarr[Tdarr*]
-    Navi[Navidrome*]
-    Calib[Calibre-Web*]
-    Paper[Paperless-ngx*]
-    Immich[Immich*]
+    Gluetun["Gluetun (VPN)"];
+    QB["qBittorrent"];
+    Prowlarr["Prowlarr"];
+    Sonarr["Sonarr"];
+    Radarr["Radarr"];
+    Readarr["Readarr"];
+    Lidarr["Lidarr"];
+    Bazarr["Bazarr"];
+    Jellyfin["Jellyfin"];
+    Jellyseerr["Jellyseerr"];
+    Flare["FlareSolverr*"];
+    Strip["Striparr*"];
+    Tdarr["Tdarr*"];
+    Navi["Navidrome*"];
+    Calib["Calibre-Web*"];
+    Paper["Paperless-ngx*"];
+    Immich["Immich*"];
   end
 
-  U-->Caddy-->|ForwardAuth|AuthOut-->AuthS
-  Caddy--TLS-->Jellyfin & Jellyseerr & Prowlarr & Sonarr & Radarr & Readarr & Lidarr & Bazarr & Navi & Calib & Paper & Immich
-  QB---Gluetun
+  %% --- Edges ---
+  U --> Caddy;
+  Caddy -->|"ForwardAuth"| AuthOut;
+  AuthOut --> AuthS;
 
+  Caddy -->|"TLS"| Jellyfin;
+  Caddy -->|"TLS"| Jellyseerr;
+  Caddy -->|"TLS"| Prowlarr;
+  Caddy -->|"TLS"| Sonarr;
+  Caddy -->|"TLS"| Radarr;
+  Caddy -->|"TLS"| Readarr;
+  Caddy -->|"TLS"| Lidarr;
+  Caddy -->|"TLS"| Bazarr;
+  Caddy -->|"TLS"| Navi;
+  Caddy -->|"TLS"| Calib;
+  Caddy -->|"TLS"| Paper;
+  Caddy -->|"TLS"| Immich;
+
+  QB --- Gluetun;
+
+  %% --- Styling optional apps ---
   classDef opt fill:#eee,stroke:#999,stroke-dasharray: 5 5;
   class Flare,Strip,Tdarr,Navi,Calib,Paper,Immich opt;
